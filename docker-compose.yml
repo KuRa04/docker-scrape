@@ -1,0 +1,8 @@
+version: '3'
+services:
+  scraper:
+    build: .
+    container_name: web_scraper
+    volumes:
+      - ./output:/usr/src/app/output  # ホストのoutputフォルダをコンテナにマウント
+    restart: unless-stopped
