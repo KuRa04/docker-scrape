@@ -24,48 +24,30 @@ driver.get(url)
 # ページの読み込みを待機
 time.sleep(5)  # 必要に応じて待機時間を調整
 
+# スクロールする関数
+def scroll_to_bottom(driver):
+    last_height = driver.execute_script("return document.body.scrollHeight")
+    
+    while True:
+        # スクロールダウン
+        driver.execute_script("window.scrollTo(0, document.body.scrollHeight);")
+        
+        # 新しい高さを取得
+        time.sleep(5)  # スクロール後の待機時間
+        new_height = driver.execute_script("return document.body.scrollHeight")
+        
+        # 新しい高さが変わらなければ終了
+        if new_height == last_height:
+            break
+        
+        last_height = new_height
+
+# ページの一番下までスクロール
+scroll_to_bottom(driver)
+
 # ページの全体HTMLを表示
 html_content = driver.page_source
 print("全体のHTML:")
 print(html_content) 
 
-# # データの格納用リスト
-# case_studies = []
-
-# # 'archive-case' クラスを持つdivタグを取得
-# case_list = driver.find_elements(By.CLASS_NAME, "archive-case")
-# print(f"取得した件数: {len(case_list)}")
-
-# for case in case_list:
-#     # URLの取得
-#     a_tag = case.find_element(By.TAG_NAME, "a")
-#     case_url = a_tag.get_attribute("href")
-    
-#     # 企業名の取得
-#     company_name_tag = a_tag.find_element(By.TAG_NAME, "p")
-#     company_name = company_name_tag.text.strip() if company_name_tag else "N/A"
-    
-#     # 各タグ名の取得
-#     tags = []
-#     tag_div = case.find_element(By.CLASS_NAME, "tag-list")
-#     if tag_div:
-#         tag_elements = tag_div.find_elements(By.TAG_NAME, "span")
-#         for tag in tag_elements:
-#             tags.append(tag.text.strip())
-    
-#     # 結果をリストに追加
-#     case_studies.append({
-#         "企業名": company_name,
-#         "URL": case_url,
-#         "タグ": tags
-#     })
-
-# # 結果の表示
-# for study in case_studies:
-#     print(f"企業名: {study['企業名']}")
-#     print(f"URL: {study['URL']}")
-#     print(f"タグ: {', '.join(study['タグ'])}")
-#     print("="*50)
-
-# # ブラウザを閉じる
 driver.quit()
