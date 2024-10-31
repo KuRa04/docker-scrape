@@ -1,15 +1,28 @@
-# Pythonベースイメージを使用
-FROM python:3.9-slim
+# ベースイメージとしてPython 3.9を使用
+FROM python:3.9
 
-# 作業ディレクトリを設定
+# 必要なライブラリのインストール
+RUN apt-get update && apt-get install -y \
+    wget \
+    unzip \
+    chromium \
+    chromium-driver \
+    && apt-get clean \
+    && rm -rf /var/lib/apt/lists/*
+
+# 作業ディレクトリを指定
 WORKDIR /usr/src/app
 
-# 必要なパッケージをインストール
+# 必要なライブラリをインストール
 COPY requirements.txt ./
 RUN pip install --no-cache-dir -r requirements.txt
 
-# スクリプトファイルをコピー
+# アプリケーションのコードをコピー
 COPY . .
 
-# スクリプトを実行
-CMD ["python", "./scrape.py"]
+# Chromeオプションを設定
+ENV CHROME_BIN=/usr/bin/chromium
+ENV CHROME_DRIVER=/usr/bin/chromedriver
+
+# アプリケーションを起動
+CMD ["python", "./aidoma_scrape.py"]
