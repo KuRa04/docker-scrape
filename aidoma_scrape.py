@@ -28,16 +28,15 @@ time.sleep(5)  # 必要に応じて待機時間を調整
 # スクロールする関数
 def scroll_and_collect_data(driver):
     case_studies = []  # データを格納するリスト
-    last_count = 0
+    existing_companies = set() 
+    last_height = driver.execute_script("return document.body.scrollHeight")  # 初期の高さを取得
     
     while True:
         # 現在のcase-study__content--listの個数を取得
-        current_count = len(driver.find_elements(By.CLASS_NAME, "alm-reveal"))
-
         # 新しいデータを取得
         case_list = driver.find_elements(By.CLASS_NAME, "case-study__content--list")
         
-        for case in case_list[last_count:]:
+        for case in case_list:
             try:
                 # URLの取得
                 a_tag = case.find_element(By.TAG_NAME, "a")
@@ -47,6 +46,10 @@ def scroll_and_collect_data(driver):
                 company_name_tag = a_tag.find_element(By.TAG_NAME, "p")
                 company_name = company_name_tag.text.strip() if company_name_tag else "N/A"
                 
+                            # 既存の企業名をチェック
+                if company_name in existing_companies:
+                  continue  # 既に存在する企業名ならスキップ
+
                 # 各タグ名の取得
                 tags = []
                 tag_div = case.find_element(By.CLASS_NAME, "tag-list")
@@ -61,6 +64,9 @@ def scroll_and_collect_data(driver):
                     "URL": case_url,
                     "タグ": ", ".join(tags)  # タグをカンマ区切りで結合
                 })
+                
+                existing_companies.add(company_name)
+
             except Exception as e:
                 print(f"Error while extracting data: {e}")
 
@@ -69,14 +75,13 @@ def scroll_and_collect_data(driver):
         
         # スクロール後の待機時間
         time.sleep(10)  # 必要に応じて待機時間を調整
+        new_height = driver.execute_script("return document.body.scrollHeight")
 
-        # 個数に差分が出なければ終了
-        if current_count == last_count:
+
+        if new_height == last_height:
             break
-        
-        last_count = current_count
-        
-
+        last_height = new_height  # 高さを更新
+      
     return case_studies
 
 # ページの全体HTMLを表示

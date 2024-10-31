@@ -4,5 +4,5 @@ services:
     build: .
     container_name: web_scraper
     volumes:
-      - ./output:/usr/src/app/output  # ホストのoutputフォルダをコンテナにマウント
+      - ./output:/usr/src/app/output
     restart: unless-stopped
