@@ -6,8 +6,8 @@ import csv
 import time
 
 # ケーススタディURLが保存されているCSVファイルのパス
-input_csv_file = 'aidma_casestudy_url.csv'
-output_csv_file = 'output/case_study_details.csv'
+input_csv_file = 'scraping_target/aidma/resources/aidma_casestudy_url.csv'
+output_csv_file = 'output/aidma/case_study_details.csv'
 csv_columns = ['ケーススタディ_URL', '事業内容', '会社HP']
 
 # Chromeオプションを設定
