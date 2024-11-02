@@ -24,13 +24,12 @@ driver.get(url)
 
 # スクロールする関数
 def scroll_and_collect_data(driver):
-    case_studies = []  # データを格納するリスト
+    case_studies = []
     existing_companies = set() 
-    last_height = driver.execute_script("return document.body.scrollHeight")  # 初期の高さを取得
+    last_height = driver.execute_script("return document.body.scrollHeight")
     
     while True:
         # 現在のcase-study__content--listの個数を取得
-        # 新しいデータを取得
         case_list = driver.find_elements(By.CLASS_NAME, "case-study__content--list")
         
         for case in case_list:
@@ -55,44 +54,15 @@ def scroll_and_collect_data(driver):
                     for tag in tag_elements:
                         tags.append(tag.text.strip())
 
-                # ケーススタディのページに遷移
-                # driver.get(case_url)
-
-                # 必要に応じて待機時間を調整
-                # time.sleep(5)
-
-                # business_content = None
-                # company_website = None
-
-                # # 事業内容と会社HPの取得
-                # try: 
-                #   overview_section = driver.find_elements(By.CLASS_NAME, "single-content__introduction--desc")
-                #   content_lists = overview_section.find_elements(By.CLASS_NAME, "single-content__introduction--desc__list")
-
-                #   for content in content_lists:
-                #     if "事業内容" in content.text:
-                #         business_content = content.find_elements(By.TAG_NAME, "p")[1].text
-                #     elif "URL" in content.text:
-                #         company_website = content.find_element(By.TAG_NAME, "a").get_attribute("href")
-
-                # except Exception as e:
-                #     print(f"Error accessing case details for {company_name}: {e}")
-
                 # 結果をリストに追加
                 case_studies.append({
                     "企業名": company_name,
-                    # "会社HP": company_website,
-                    # "事業内容": business_content,
                     "ケーススタディ_URL": case_url,
                     "タグ": ", ".join(tags),
                 })
                 
                 existing_companies.add(company_name)
                 print(f"Data extracted for {existing_companies}")
-
-                # トップページに戻る
-                # driver.back()
-                # time.sleep(5)  # Adjust waiting time as needed
 
             except Exception as e:
                 print(f"Error while extracting data: {e}")
