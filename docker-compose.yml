@@ -5,4 +5,4 @@ services:
     container_name: web_scraper
     volumes:
       - ./output:/usr/src/app/output
-    restart: unless-stopped
+    tty: true

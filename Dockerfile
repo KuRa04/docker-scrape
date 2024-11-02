@@ -24,5 +24,5 @@ COPY . .
 ENV CHROME_BIN=/usr/bin/chromium
 ENV CHROME_DRIVER=/usr/bin/chromedriver
 
-# アプリケーションを起動
-CMD ["python", "./aidma_scrape.py"]
+# デフォルトでシェルを起動
+CMD ["bash"]
