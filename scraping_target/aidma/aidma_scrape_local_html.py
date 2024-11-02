@@ -54,10 +54,10 @@ def extract_data_from_html(file_path):
 
     return case_studies
 
-html_file_path = "aidoma.html"  # HTMLファイルのパスを指定
+html_file_path = "scraping_target/aidma/aidma.html"  # HTMLファイルのパスを指定
 case_studies_data = extract_data_from_html(html_file_path)
     
-csv_file = 'output/case_studies_local_html.csv'
+csv_file = 'output/aidma/case_studies_local_html.csv'
 csv_columns = ['企業名', 'ケーススタディ_URL', 'タグ']
 
 with open(csv_file, 'w', newline='', encoding='utf-8') as csvfile:
